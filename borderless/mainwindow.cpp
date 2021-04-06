@@ -221,8 +221,12 @@ void MainWindow::scaleimg() {
 }
 
 void MainWindow::interpolateimg() {
-	if(animated) ui->label->movie()->setScaledSize((interpolated && !stock) ? QSize(width*scale,height*scale) : QSize(width,height));
-	else ui->label->setPixmap(img.scaled(width*scale,height*scale, Qt::IgnoreAspectRatio, (interpolated && !stock) ? Qt::SmoothTransformation : Qt::FastTransformation));
+	if(animated) {
+		ui->label->movie()->setScaledSize((interpolated && !stock) ? QSize(width*scale,height*scale) : QSize(width,height));
+	} else {
+		if(scale == 1) ui->label->setPixmap(img);
+		else ui->label->setPixmap(img.scaled(width*scale,height*scale, Qt::IgnoreAspectRatio, (interpolated && !stock) ? Qt::SmoothTransformation : Qt::FastTransformation));
+	}
 }
 
 void MainWindow::wheelEvent(QWheelEvent* event) {
