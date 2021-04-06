@@ -230,13 +230,14 @@ void MainWindow::interpolateimg() {
 }
 
 void MainWindow::wheelEvent(QWheelEvent* event) {
-	QPoint center = this->geometry().center();
+	QPointF anchor = QPointF((event->globalPosition().x() - this->geometry().left())/(width*scale),
+							 (event->globalPosition().y() - this->geometry().top())/(height*scale));
 	scale += (event->angleDelta().y()*.2)/width;
 	if(width*scale < 32) scale = 32.0f/width;
 	if(height*scale < 32) scale = 32.0f/height;
 	this->setGeometry(
-		qRound((center.x()-width*scale*.5+1)*.5)*2,
-		qRound((center.y()-height*scale*.5+1)*.5)*2,
+		event->globalPosition().x()-width*scale*anchor.x(),
+		event->globalPosition().y()-height*scale*anchor.y(),
 		width*scale,
 		height*scale);
 	ui->label->setGeometry(0,0,width*scale,height*scale);
