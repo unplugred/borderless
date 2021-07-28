@@ -1,45 +1,39 @@
 # borderless
 
-An ultra-lightweight UI-less image viewer
+A lightweight UI-less image viewer
 
 ## lightweight you say?
 
-17kb. crazy tiny.
+Written in C++. Opens in less than a second
 
 ## and ui less too?
 
-borderless and ui less. you can interact with it via right click menu or keymaps.
+Borderless and UI-less. You can interact with it via right click menu or keymaps.
 
-keymaps being:
+Keymaps being:
 
-left/right to navigate through the folder.
+Left/Right to navigate through the folder.
 
-escape to quit.
+Escape to quit.
 
-scrollwheel to zoom in/out.
+Scrollwheel to zoom in/out.
 
-## features
+## Features
 
-always on top toggle
+Fully transparent window
 
-bilinear/nearest neighbor interpolation toggle
+Animated Gif support
 
-copy to clipboard button
+Always on top toggle
 
-open containing folder button
+Bilinear/Nearest-Neighbor interpolation toggle
 
-## downfalls
+Copy to clipboard button
 
-only supports .jpg, .jpeg, .png, .gif, .bmp, and .wlm
+Open containing folder button
 
-window is not transparent
+Supports .bmp, .cur, .gif, .ico, .jpg, .pbm, .pgm, .png, .ppm, .svg, .xbm, .xpm
 
-copy button converts it to a png
-
-## roadmap
-
-C++ implementation coming when I won't be lazy.
-
-## can i have a screenshot?
+## Can i have a screenshot?
 
 no
