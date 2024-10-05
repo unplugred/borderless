@@ -34,6 +34,10 @@ Open containing folder button
 
 Supports .bmp, .cur, .gif, .ico, .jpg, .pbm, .pgm, .png, .ppm, .svg, .xbm, .xpm
 
+## Building the thing
+
+I built it on QT, forgot which version. You can try to use QT Creator and may god be on your side.
+
 ## Can i have a screenshot?
 
 no
