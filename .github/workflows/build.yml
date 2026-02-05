@@ -49,10 +49,9 @@ jobs:
 
     - name: install qt
       id: install-qt
-      if: !startsWith(matrix.os, 'ubuntu')
+      if: ${{ !startsWith(matrix.os, 'ubuntu') }}
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.4.2'
         modules: 'qtimageformats'
         archives: 'qtbase qtsvg qtimageformats'
 
