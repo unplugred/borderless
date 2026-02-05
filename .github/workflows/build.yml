@@ -26,7 +26,7 @@ jobs:
           }
         - {
             name: "Linux",
-            os: ubuntu-22.04,
+            os: ubuntu-24.04,
             folder: "build_linux"
           }
     runs-on: ${{ matrix.os }}
@@ -46,6 +46,12 @@ jobs:
       id: prepare
       run: |
         python3 build.py prepare
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        modules: 'qtimageformats'
+        archives: 'qtbase qtsvg qtimageformats'
 
     - name: configure
       id: configure
