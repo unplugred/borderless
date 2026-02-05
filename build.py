@@ -98,6 +98,7 @@ def prepare():
 	debug("PREPARING DEPENDENCIES")
 	if systems[system]["code"] == "linux":
 		run_command("sudo apt-get update",True)
+		run_command("sudo apt install build-essential libgl1-mesa-dev qt6-base-dev",True)
 		# TODO prepare
 
 def configure():
