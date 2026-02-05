@@ -47,7 +47,7 @@ jobs:
       run: |
         python3 build.py prepare
 
-    - name: Install Qt
+    - name: install qt
       uses: jurplel/install-qt-action@v4
       with:
         modules: 'qtimageformats'
