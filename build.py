@@ -20,7 +20,7 @@ systems = [{
 },{
 	"name": "Linux",
 	"code": "linux",
-	"image": "ubuntu-22.04",
+	"image": "ubuntu-24.04",
 	"compiler": "Unix Makefiles",
 	"executable": ""
 }]
@@ -98,7 +98,7 @@ def prepare():
 	debug("PREPARING DEPENDENCIES")
 	if systems[system]["code"] == "linux":
 		run_command("sudo apt-get update",True)
-		run_command("sudo apt install build-essential libgl1-mesa-dev libfontconfig1-dev libfreetype-dev libgtk-3-dev libx11-dev libx11-xcb-dev libxcb-cursor-dev libxcb-glx0-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev libxcb-util-dev libxcb-xfixes0-dev libxcb-xkb-dev libxcb1-dev libxext-dev libxfixes-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev libxrender-dev libatspi2.0-dev qt6-base-dev",True)
+		run_command("sudo apt install build-essential libgl1-mesa-dev libfontconfig1-dev libfreetype-dev libgtk-3-dev libx11-dev libx11-xcb-dev libxcb-cursor-dev libxcb-glx0-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev libxcb-util-dev libxcb-xfixes0-dev libxcb-xkb-dev libxcb1-dev libxext-dev libxfixes-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev libxrender-dev libatspi2.0-dev libvulkan-dev qt6-base-dev",True)
 
 def configure():
 	debug("CONFIGURING")
