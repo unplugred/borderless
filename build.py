@@ -143,25 +143,25 @@ def run_program(string):
 		configure()
 		return
 
-	if "build".startswith(args[0]) and ',' not in string and len(args) <= 3:
-		config = "release"
-		if len(args) >= 2:
-			config = fuzzy_match(args[1],["release","debug"])
-			if config == None:
-				error("Unknown version: "+args[1])
-		run = "yes"
-		if len(args) >= 3:
-			run = fuzzy_match(args[1],["yes","no"])
-			if run == None:
-				error("Unknown version: "+args[1])
-		build(config)
-		if run == "yes":
-			run_plugin()
-		return
-
 	if "installer".startswith(args[0]) and ',' not in string and len(args) <= 1:
 		build_installer()
 		return
+
+	config = "release"
+	if len(args) >= 1:
+		config = fuzzy_match(args[0],["release","debug"])
+		if config == None:
+			error("Unknown config: "+args[0])
+
+	run = "yes"
+	if len(args) >= 2:
+		run = fuzzy_match(args[1],["yes","no"])
+		if run == None:
+			error("Unknown run: "+args[1])
+
+	build(config)
+	if run == "yes":
+		run_plugin()
 
 if __name__ == "__main__":
 	run_program(' '.join(shlex.quote(s) for s in (sys.argv[1:])))
