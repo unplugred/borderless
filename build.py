@@ -91,6 +91,15 @@ def copy(path, output):
 	else:
 		shutil.copy2(path, output)
 
+def create_dir(path):
+	debug("CREATING DIRECTORY "+path)
+
+	if os.path.isdir(path):
+		alert("Directory "+path+" already exists.")
+		return
+
+	os.makedirs(path)
+
 def prepare():
 	debug("PREPARING DEPENDENCIES")
 	if systems[system]["code"] == "linux":
@@ -109,6 +118,7 @@ def configure():
 def build(config):
 	debug("BUILDING "+config.upper()+" VERSION")
 	run_command("cmake --build \"build_"+systems[system]["code"]+"\" --config "+config+" --target borderless")
+	create_dir("dist")
 	copy(join(["build_"+systems[system]["code"],"borderless"+systems[system]["executable"]]),join(["dist","borderless"+systems[system]["executable"]]))
 	if systems[system]["code"] == "mac":
 		# TODO codesigning

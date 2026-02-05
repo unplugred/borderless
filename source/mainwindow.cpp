@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(
 	interpolated = settings.value("interpolated",true ).toBool();
 
 	setAttribute(Qt::WA_TranslucentBackground);
-	setWindowIcon(QIcon(":/icons/borderless.xpm"));
+	setWindowIcon(QIcon(":/icons/source/borderless.xpm"));
 	setAcceptDrops(true);
-	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	setContextMenuPolicy(Qt::CustomContextMenu);
 	ui->setupUi(this);
 	connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(ShowContextMenu(QPoint)));
 	if(ontop)
@@ -100,7 +100,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::LoadImage(QString path, bool loadnext) {
 	if(path.isEmpty()) {
-		path = ":/icons/borderless.xpm";
+		path = ":/icons/source/borderless.xpm";
 		if(!stock) {
 			copyfile       ->setEnabled(false);
 			showinfolder   ->setEnabled(false);
@@ -131,11 +131,13 @@ void MainWindow::LoadImage(QString path, bool loadnext) {
 				found = true;
 			} else if(compatible(filename) > 0) {
 				if(found) {
-					if(seekinglast) prevpath =  dir.absoluteFilePath(filename);
-					else {
+					if(seekinglast) {
+						prevpath = dir.absoluteFilePath(filename);
+					} else {
 						nextpath = dir.absoluteFilePath(filename);
-						if(!prevpath.isEmpty()) break;
-						else {
+						if(!prevpath.isEmpty()) {
+							break;
+						} else {
 							prevpath = dir.absoluteFilePath(filename);
 							seekinglast = true;
 						}
@@ -161,7 +163,7 @@ void MainWindow::LoadImage(QString path, bool loadnext) {
 		animated = compatible(path) == 2;
 		if(animated) {
 			QMovie *movie = new QMovie(path);
-			ui->label->setMovie(movie);
+			ui->img->setMovie(movie);
 			movie->start();
 			width  = movie->frameRect().width ();
 			height = movie->frameRect().height();
@@ -195,46 +197,54 @@ void MainWindow::scaleimg() {
 		screen = qApp->screenAt(center)->availableGeometry();
 		initial = false;
 	} else {
-		center = this->geometry().center();
-		screen = qApp->screenAt(this->geometry().center())->availableGeometry();
+		center = geometry().center();
+		screen = qApp->screenAt(geometry().center())->availableGeometry();
 	}
 
 	if(width        < 32) scale = 32.0f/width ;
 	if(height*scale < 32) scale = 32.0f/height;
 	if(width *scale > screen.width ()) scale = (float)screen.width ()/width ;
 	if(height*scale > screen.height()) scale = (float)screen.height()/height;
-	this->setGeometry(
-		std::min((int)(std::max(screen.left(),(int)(qRound((center.x()-width *scale*.5+1)*.5)*2))+width *scale),screen.right ())-width *scale,
-		std::min((int)(std::max(screen.top (),(int)(qRound((center.y()-height*scale*.5+1)*.5)*2))+height*scale),screen.bottom())-height*scale,
-		width *scale,
-		height*scale);
-	ui->label->setGeometry(0,0,width*scale,height*scale);
+	int scaledwidth  = qRound(width *scale);
+	int scaledheight = qRound(height*scale);
+	setGeometry(
+		std::min(std::max(screen.left(),qRound((center.x()-scaledwidth *.5+1)*.5)*2)+scaledwidth ,screen.right ())-scaledwidth ,
+		std::min(std::max(screen.top (),qRound((center.y()-scaledheight*.5+1)*.5)*2)+scaledheight,screen.bottom())-scaledheight,
+		scaledwidth ,
+		scaledheight);
+	ui->img->setGeometry(0,0,
+		scaledwidth *.05f,
+		scaledheight*.05f);
 }
 
 void MainWindow::interpolateimg() {
 	if(animated) {
-		ui->label->movie()->setScaledSize((interpolated&&!stock)?QSize(width*scale,height*scale):QSize(width,height));
+		ui->img->movie()->setScaledSize((interpolated&&!stock)?QSize(qRound(width*scale),qRound(height*scale)):QSize(width,height));
 	} else {
 		if(scale == 1)
-			ui->label->setPixmap(img);
+			ui->img->setPixmap(img);
 		else
-			ui->label->setPixmap(img.scaled(width*scale,height*scale,Qt::IgnoreAspectRatio,(interpolated&&!stock)?Qt::SmoothTransformation:Qt::FastTransformation));
+			ui->img->setPixmap(img.scaled(qRound(width*scale),qRound(height*scale),Qt::IgnoreAspectRatio,(interpolated&&!stock)?Qt::SmoothTransformation:Qt::FastTransformation));
 	}
 }
 
 void MainWindow::wheelEvent(QWheelEvent* event) {
 	QPointF anchor = QPointF(
-		(event->globalPosition().x()-this->geometry().left())/(width *scale),
-		(event->globalPosition().y()-this->geometry().top ())/(height*scale));
+		(event->globalPosition().x()-geometry().left())/(width *scale),
+		(event->globalPosition().y()-geometry().top ())/(height*scale));
 	scale += (event->angleDelta().y()*.2)/width;
 	if(width *scale < 32) scale = 32.0f/width ;
 	if(height*scale < 32) scale = 32.0f/height;
-	this->setGeometry(
-		event->globalPosition().x()-width *scale*anchor.x(),
-		event->globalPosition().y()-height*scale*anchor.y(),
-		width *scale,
-		height*scale);
-	ui->label->setGeometry(0,0,width*scale,height*scale);
+	int scaledwidth  = qRound(width *scale);
+	int scaledheight = qRound(height*scale);
+	setGeometry(
+		event->globalPosition().x()-scaledwidth *anchor.x(),
+		event->globalPosition().y()-scaledheight*anchor.y(),
+		scaledwidth ,
+		scaledheight);
+	ui->img->setGeometry(0,0,
+		scaledwidth ,
+		scaledheight);
 	interpolateimg();
 }
 
@@ -243,11 +253,11 @@ void MainWindow::ShowContextMenu(const QPoint &pos) {
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* event) {
-	pressPos = event->globalPos()-geometry().topLeft(); // TODO use globalPosition instead
+	pressPos = event->globalPosition().toPoint()-geometry().topLeft();
 	event->accept();
 }
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
-	window()->move(event->globalPos()-pressPos); // TODO use globalPosition instead
+	move(event->globalPosition().x()-pressPos.x(),event->globalPosition().y()-pressPos.y()); // TODO works when commented out ???????
 	event->accept();
 }
 
@@ -274,7 +284,7 @@ void MainWindow::dropEvent(QDropEvent *event) {
 
 void MainWindow::OpenFile() {
 	QString path = QFileDialog::getOpenFileName(this,tr("Open image"),stock?QDir::homePath():QFileInfo(currentpath).absolutePath(),tr("Image files ("+formats.left(formats.length()-1).toLocal8Bit()+");;All files (*.*)"));
-	if(!path.isNull()     ) LoadImage(path);
+	if(!path    .isNull ()) LoadImage(path);
 }
 void MainWindow::NextFile() {
 	if(!nextpath.isEmpty()) LoadImage(nextpath);
