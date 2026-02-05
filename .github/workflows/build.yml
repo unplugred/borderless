@@ -52,6 +52,7 @@ jobs:
       if: ${{ !startsWith(matrix.os, 'ubuntu') }}
       uses: jurplel/install-qt-action@v4
       with:
+        version: '6.10.2'
         modules: 'qtimageformats'
         archives: 'qtbase qtsvg qtimageformats'
 
