@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>267</width>
-    <height>174</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Borderless</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="Resources.qrc">
-    <normaloff>:/icons/borderless.xpm</normaloff>:/icons/borderless.xpm</iconset>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>95</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-  </widget>
- </widget>
- <resources>
-  <include location="Resources.qrc"/>
- </resources>
- <connections/>
+	<class>MainWindow</class>
+	<widget class="QMainWindow" name="MainWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>267</width>
+				<height>174</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>Borderless</string>
+		</property>
+		<property name="windowIcon">
+			<iconset resource="Resources.qrc">
+				<normaloff>:/icons/borderless.xpm</normaloff>
+				:/icons/borderless.xpm
+			</iconset>
+		</property>
+		<widget class="QWidget" name="centralwidget">
+			<widget class="QLabel" name="label">
+				<property name="geometry">
+					<rect>
+						<x>0</x>
+						<y>0</y>
+						<width>95</width>
+						<height>28</height>
+					</rect>
+				</property>
+				<property name="text">
+					<string/>
+				</property>
+				<property name="scaledContents">
+					<bool>true</bool>
+				</property>
+			</widget>
+		</widget>
+	</widget>
+	<resources>
+		<include location="Resources.qrc"/>
+	</resources>
+	<connections/>
 </ui>

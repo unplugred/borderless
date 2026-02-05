@@ -7,8 +7,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
 Q_OBJECT
 
 public:
@@ -56,11 +55,11 @@ protected:
 	int height;
 	QString prevpath;
 	QString nextpath;
-	bool ontop = false;
+	bool ontop        = false;
 	bool interpolated = true;
-	bool initial = true;
-	bool stock = false;
-	bool animated = false;
+	bool initial      = true;
+	bool stock        = false;
+	bool animated     = false;
 	QPixmap img;
 	QPoint pressPos;
 	QString formats;
@@ -70,4 +69,4 @@ protected:
 private:
 	Ui::MainWindow *ui;
 };
-#endif // MAINWINDOW_H
+#endif

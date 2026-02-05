@@ -1,6 +1,6 @@
 <RCC>
-    <qresource prefix="/icons">
-        <file>borderless.xpm</file>
-        <file>borderless16.xpm</file>
-    </qresource>
+	<qresource prefix="/icons">
+		<file>borderless.xpm</file>
+		<file>borderless16.xpm</file>
+	</qresource>
 </RCC>
