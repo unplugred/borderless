@@ -50,6 +50,7 @@ jobs:
     - name: install qt
       uses: jurplel/install-qt-action@v4
       with:
+        version: '6.4.2'
         modules: 'qtimageformats'
         archives: 'qtbase qtsvg qtimageformats'
 
