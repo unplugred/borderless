@@ -19,7 +19,7 @@
 				:/icons/source/borderless.xpm
 			</iconset>
 		</property>
-		<widget class="QLabel" name="img">
+		<widget class="QLabel" name="canvas">
 			<property name="geometry">
 				<rect>
 					<x>0</x>

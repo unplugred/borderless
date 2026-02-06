@@ -92,13 +92,13 @@ MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(
 	contextmenu->addSeparator();
 	contextmenu->addAction(quit           );
 
-	LoadImage(path);
+	if(!LoadImage(path)) LoadImage("");
 }
 MainWindow::~MainWindow() {
 	delete ui;
 }
 
-void MainWindow::LoadImage(QString path, bool loadnext) {
+bool MainWindow::LoadImage(QString path) {
 	if(path.isEmpty()) {
 		path = ":/icons/source/borderless.xpm";
 		if(!stock) {
@@ -118,13 +118,14 @@ void MainWindow::LoadImage(QString path, bool loadnext) {
 	path = QFileInfo(path).canonicalFilePath();
 	QString nameoffile = QFileInfo(path).fileName();
 
-	QDir dir = QFileInfo(path).dir();
-	QStringList files = dir.entryList();
-	bool found = false;
-	bool seekinglast = false;
 	nextpath = "";
 	prevpath = "";
 	currentpath = path;
+	QDir dir = QFileInfo(path).dir();
+	if(!dir.exists()) return false;
+	QStringList files = dir.entryList();
+	bool found = false;
+	bool seekinglast = false;
 	if(!stock) {
 		foreach(QString filename, files) {
 			if(filename == nameoffile) {
@@ -144,11 +145,13 @@ void MainWindow::LoadImage(QString path, bool loadnext) {
 					}
 				} else {
 					prevpath = dir.absoluteFilePath(filename);
-					if(nextpath.isEmpty()) nextpath = dir.absoluteFilePath(filename);
+					if(nextpath.isEmpty())
+						nextpath = dir.absoluteFilePath(filename);
 				}
 			}
 		}
 	}
+	if(!QFile::exists(path)) return false;
 	if(nextpath.isEmpty()) {
 		nextfile->setEnabled(false);
 		prevfile->setEnabled(false);
@@ -157,34 +160,27 @@ void MainWindow::LoadImage(QString path, bool loadnext) {
 		prevfile->setEnabled(true);
 	}
 
-	if(QFile::exists(path)) {
-		setWindowTitle(stock?"Borderless":nameoffile);
-
-		animated = compatible(path) == 2;
-		if(animated) {
-			QMovie *movie = new QMovie(path);
-			ui->img->setMovie(movie);
-			movie->start();
-			width  = movie->frameRect().width ();
-			height = movie->frameRect().height();
-			scaleimg();
-		} else {
-			img = QPixmap(path);
-			width  = img.width ();
-			height = img.height();
-			scaleimg();
-			interpolateimg();
-		}
+	animated = compatible(path) == 2;
+	if(animated) {
+		QMovie *movie = new QMovie(path);
+		if(!movie->isValid()) return false;
+		ui->canvas->setMovie(movie);
+		movie->start();
+		width  = movie->frameRect().width ();
+		height = movie->frameRect().height();
+		scaleimg();
 	} else {
-		path = loadnext?nextpath:prevpath;
-		if(QFile::exists(path)) {
-			LoadImage(path,loadnext);
-		} else {
-			nextfile    ->setEnabled(false);
-			prevfile    ->setEnabled(false);
-			showinfolder->setEnabled(false);
-		}
+		img = QPixmap(path);
+		if(img.isNull()) return false;
+		width  = img.width ();
+		height = img.height();
+		scaleimg();
+		interpolateimg();
 	}
+
+	setWindowTitle(stock?"Borderless":nameoffile);
+	loopbegin = "";
+	return true;
 }
 
 void MainWindow::scaleimg() {
@@ -212,19 +208,19 @@ void MainWindow::scaleimg() {
 		std::min(std::max(screen.top (),qRound((center.y()-scaledheight*.5+1)*.5)*2)+scaledheight,screen.bottom())-scaledheight,
 		scaledwidth ,
 		scaledheight);
-	ui->img->setGeometry(0,0,
+	ui->canvas->setGeometry(0,0,
 		scaledwidth *.05f,
 		scaledheight*.05f);
 }
 
 void MainWindow::interpolateimg() {
 	if(animated) {
-		ui->img->movie()->setScaledSize((interpolated&&!stock)?QSize(qRound(width*scale),qRound(height*scale)):QSize(width,height));
+		ui->canvas->movie()->setScaledSize((interpolated&&!stock)?QSize(qRound(width*scale),qRound(height*scale)):QSize(width,height));
 	} else {
 		if(scale == 1)
-			ui->img->setPixmap(img);
+			ui->canvas->setPixmap(img);
 		else
-			ui->img->setPixmap(img.scaled(qRound(width*scale),qRound(height*scale),Qt::IgnoreAspectRatio,(interpolated&&!stock)?Qt::SmoothTransformation:Qt::FastTransformation));
+			ui->canvas->setPixmap(img.scaled(qRound(width*scale),qRound(height*scale),Qt::IgnoreAspectRatio,(interpolated&&!stock)?Qt::SmoothTransformation:Qt::FastTransformation));
 	}
 }
 
@@ -242,7 +238,7 @@ void MainWindow::wheelEvent(QWheelEvent* event) {
 		event->globalPosition().y()-scaledheight*anchor.y(),
 		scaledwidth ,
 		scaledheight);
-	ui->img->setGeometry(0,0,
+	ui->canvas->setGeometry(0,0,
 		scaledwidth ,
 		scaledheight);
 	interpolateimg();
@@ -278,19 +274,57 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
 	}
 }
 void MainWindow::dropEvent(QDropEvent *event) {
-	LoadImage(event->mimeData()->urls().at(0).toLocalFile());
-	event->acceptProposedAction();
+	if(LoadImage(event->mimeData()->urls().at(0).toLocalFile()))
+		event->acceptProposedAction();
+	else
+		LoadImage("");
 }
 
 void MainWindow::OpenFile() {
 	QString path = QFileDialog::getOpenFileName(this,tr("Open image"),stock?QDir::homePath():QFileInfo(currentpath).absolutePath(),tr("Image files ("+formats.left(formats.length()-1).toLocal8Bit()+");;All files (*.*)"));
-	if(!path    .isNull ()) LoadImage(path);
+	if(!path    .isNull ()) if(!LoadImage(path)) LoadImage("");
 }
 void MainWindow::NextFile() {
-	if(!nextpath.isEmpty()) LoadImage(nextpath);
+	if(nextpath.isEmpty()) {
+		if(!loopbegin.isEmpty()) LoadImage("");
+		return;
+	}
+	if(!LoadImage(nextpath)) {
+		if(loopbegin.isEmpty()) {
+			if(QFile::exists(currentpath))
+				loopbegin = currentpath;
+			else if(prevpath.isEmpty())
+				LoadImage("");
+			else
+				loopbegin = prevpath;
+			NextFile();
+		} else if(loopbegin == currentpath) {
+			LoadImage("");
+		} else {
+			NextFile();
+		}
+	}
 }
 void MainWindow::PrevFile() {
-	if(!prevpath.isEmpty()) LoadImage(prevpath,false);
+	if(prevpath.isEmpty()) {
+		if(!loopbegin.isEmpty()) LoadImage("");
+		return;
+	}
+	if(!LoadImage(prevpath)) {
+		if(loopbegin.isEmpty()) {
+			if(QFile::exists(currentpath))
+				loopbegin = currentpath;
+			else if(nextpath.isEmpty())
+				LoadImage("");
+			else
+				loopbegin = nextpath;
+			PrevFile();
+		} else if(loopbegin == currentpath) {
+			LoadImage("");
+		} else {
+			PrevFile();
+		}
+	}
 }
 void MainWindow::CopyFile() {
 	QApplication::clipboard()->setImage(QImage(currentpath),QClipboard::Clipboard);
@@ -301,6 +335,10 @@ void MainWindow::PasteFile() {
 	setWindowTitle("Borderless");
 
 	img = qvariant_cast<QPixmap>(QApplication::clipboard()->mimeData()->imageData());
+	if(img.isNull()) {
+		LoadImage("");
+		return;
+	}
 	width  = img.width ();
 	height = img.height();
 

@@ -13,7 +13,6 @@ Q_OBJECT
 public:
 	MainWindow(QWidget *parent = nullptr, QString path = "");
 	~MainWindow();
-	QString currentpath = "";
 
 private slots:
 	void ShowContextMenu(const QPoint& pos);
@@ -32,7 +31,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent* event);
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
-	void LoadImage(QString path = "", bool loadnext = true);
+	bool LoadImage(QString path = "");
 	int compatible(QString path);
 	void wheelEvent(QWheelEvent* event);
 	void saveSettings();
@@ -53,8 +52,10 @@ protected:
 	float scale;
 	int width;
 	int height;
-	QString prevpath;
-	QString nextpath;
+	QString currentpath = "";
+	QString prevpath = "";
+	QString nextpath = "";
+	QString loopbegin = "";
 	bool ontop        = false;
 	bool interpolated = true;
 	bool initial      = true;
