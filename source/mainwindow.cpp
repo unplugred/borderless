@@ -190,12 +190,13 @@ void MainWindow::scaleimg() {
 	QRect screen;
 	if(initial) {
 		center = QCursor::pos();
-		screen = qApp->screenAt(center)->availableGeometry();
 		initial = false;
 	} else {
 		center = geometry().center();
-		screen = qApp->screenAt(geometry().center())->availableGeometry();
 	}
+	QScreen* screenptr = qApp->screenAt(center);
+	if(screenptr == nullptr) screenptr = qApp->screens()[0];
+	screen = screenptr->availableGeometry();
 
 	if(width        < 32) scale = 32.0f/width ;
 	if(height*scale < 32) scale = 32.0f/height;
