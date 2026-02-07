@@ -28,9 +28,9 @@ MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(
 	ui->setupUi(this);
 	connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(ShowContextMenu(QPoint)));
 	if(ontop)
-		setWindowFlags(windowFlags()|Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint|Qt::FramelessWindowHint);
+		setWindowFlags( windowFlags()| Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint  |Qt::FramelessWindowHint|Qt::NoDropShadowWindowHint);
 	else
-		setWindowFlag(Qt::FramelessWindowHint);
+		setWindowFlags( windowFlags()                                                           |Qt::FramelessWindowHint|Qt::NoDropShadowWindowHint);
 
 	movieformats = "";
 	formats      = "";
@@ -254,7 +254,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
 	event->accept();
 }
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
-	move(event->globalPosition().x()-pressPos.x(),event->globalPosition().y()-pressPos.y()); // TODO works when commented out ???????
+	move(event->globalPosition().x()-pressPos.x(),event->globalPosition().y()-pressPos.y());
 	event->accept();
 }
 
@@ -367,9 +367,9 @@ void MainWindow::AlwaysOnTop() {
 	ontop = !ontop;
 	saveSettings();
 	if(ontop)
-		setWindowFlags( windowFlags()| Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint  |Qt::FramelessWindowHint);
+		setWindowFlags( windowFlags()| Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint  |Qt::FramelessWindowHint|Qt::NoDropShadowWindowHint);
 	else
-		setWindowFlags((windowFlags()^(Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint))|Qt::FramelessWindowHint);
+		setWindowFlags((windowFlags()^(Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint))|Qt::FramelessWindowHint|Qt::NoDropShadowWindowHint);
 	show();
 }
 void MainWindow::QuitApp() {
