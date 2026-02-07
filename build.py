@@ -127,6 +127,7 @@ def build(config):
 		# TODO codesign
 	elif systems[system]["code"] == "win":
 		copy(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
+		run_command("windeployqt "+join(["artifact","borderless"+systems[system]["executable"]])+" --release");
 	else:
 		copy(join(["build_"+systems[system]["code"],"borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
 
@@ -162,7 +163,7 @@ def run_program(string):
 
 	config = "release"
 	if len(args) >= 1:
-		config = fuzzy_match(args[0],["Release","Debug"])
+		config = fuzzy_match(args[0],["release","Debug"])
 		if config == None:
 			error("Unknown config: "+args[0])
 
