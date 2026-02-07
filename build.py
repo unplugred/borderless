@@ -125,11 +125,13 @@ def build(config):
 		run_command("macdeployqt "+join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]])+" -dmg");
 		copy(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
 		# TODO codesign
+	elif systems[system]["code"] == "win":
+		copy(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
 	else:
 		copy(join(["build_"+systems[system]["code"],"borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
 
 def execute():
-	artefact = join(["dist","borderless"+systems[system]["executable"]])
+	artefact = join(["artifact","borderless"+systems[system]["executable"]])
 	if systems[system]["code"] == "mac":
 		run_command("open -W \""+artefact+"\"")
 	elif systems[system]["code"] == "win":
@@ -160,7 +162,7 @@ def run_program(string):
 
 	config = "release"
 	if len(args) >= 1:
-		config = fuzzy_match(args[0],["release","debug"])
+		config = fuzzy_match(args[0],["Release","Debug"])
 		if config == None:
 			error("Unknown config: "+args[0])
 
