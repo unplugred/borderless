@@ -117,14 +117,18 @@ def configure():
 
 def build(config):
 	debug("BUILDING "+config.upper()+" VERSION")
-	run_command("cmake --build \"build_"+systems[system]["code"]+"\" --config "+config+" --target borderless")
-	create_dir("dist")
-	copy(join(["build_"+systems[system]["code"],"borderless"+systems[system]["executable"]]),join(["dist","borderless"+systems[system]["executable"]]))
+	run_command("cmake --build \"build_"+systems[system]["code"]+"\" --config "+config+" --target borderless",systems[system]["code"]=="mac")
+	create_dir("artifact")
 	if systems[system]["code"] == "mac":
-		# TODO codesigning
-		pass
+		create_dir(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"],"Contents","Resources"]))
+		copy(join(["dist","icon.icns"]),join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"],"Contents","Resources","borderless.icns"]))
+		run_command("macdeployqt "+join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]])+" -dmg");
+		copy(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
+		# TODO codesign
+	else:
+		copy(join(["build_"+systems[system]["code"],"borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
 
-def run_plugin():
+def execute():
 	artefact = join(["dist","borderless"+systems[system]["executable"]])
 	if systems[system]["code"] == "mac":
 		run_command("open -W \""+artefact+"\"")
@@ -168,7 +172,7 @@ def run_program(string):
 
 	build(config)
 	if run == "yes":
-		run_plugin()
+		execute()
 
 if __name__ == "__main__":
 	run_program(' '.join(shlex.quote(s) for s in (sys.argv[1:])))

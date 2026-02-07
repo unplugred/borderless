@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(
 	interpolated = settings.value("interpolated",true ).toBool();
 
 	setAttribute(Qt::WA_TranslucentBackground);
-	setWindowIcon(QIcon(":/icons/source/borderless.xpm"));
+	setWindowIcon(QIcon(":/source/borderless.xpm"));
 	setAcceptDrops(true);
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	ui->setupUi(this);
@@ -100,7 +100,7 @@ MainWindow::~MainWindow() {
 
 bool MainWindow::LoadImage(QString path) {
 	if(path.isEmpty()) {
-		path = ":/icons/source/borderless.xpm";
+		path = ":/source/borderless.xpm";
 		if(!stock) {
 			copyfile       ->setEnabled(false);
 			showinfolder   ->setEnabled(false);

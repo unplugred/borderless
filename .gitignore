@@ -4,6 +4,4 @@ build
 build_linux
 build_win
 build_mac
-dist/borderless
-dist/borderless.exe
-dist/borderless.app
+artifact
