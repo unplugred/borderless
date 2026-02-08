@@ -142,7 +142,8 @@ def execute():
 
 def build_installer():
 	debug("BUILDING INSTALLER")
-	# TODO build installer
+	if systems[system]["code"] == "win":
+		run_command("iscc \"innosetup.iss\"")
 
 def run_program(string):
 	if string.strip() == "":
