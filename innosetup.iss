@@ -1,7 +1,8 @@
 [Setup]
-ArchitecturesInstallIn64BitMode=x64
-ArchitecturesAllowed=x64
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=admin
+UsedUserAreasWarning=no
 AppName=Borderless
 AppPublisherURL=https://unplug.red/
 AppSupportURL=https://unplug.red/
@@ -9,7 +10,7 @@ AppUpdatesURL=https://unplug.red/
 AppVerName=Borderless
 AppVersion=1.0
 Compression=lzma2/ultra64
-DefaultDirName={pf}\borderless
+DefaultDirName={commonpf}\borderless
 DefaultGroupName=UnplugRed
 DisableReadyPage=false
 DisableWelcomePage=no

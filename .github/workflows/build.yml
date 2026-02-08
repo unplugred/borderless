@@ -81,7 +81,7 @@ jobs:
       if: startsWith(matrix.os, 'windows')
       with:
         name: Borderless ${{ matrix.name }} Installer
-        path: "Borderless Installer.exe"
+        path: "Output/Borderless Installer.exe"
         compression-level: 9
 
     - name: cleanup
