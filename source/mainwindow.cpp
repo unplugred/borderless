@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(
 	setAcceptDrops(true);
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	ui->setupUi(this);
+	setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+	ui->canvas->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
+	//setStyleSheet("background-color: black;");
 	connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(ShowContextMenu(QPoint)));
 	if(ontop)
 		setWindowFlags( windowFlags()| Qt::WindowStaysOnTopHint|Qt::X11BypassWindowManagerHint  |Qt::FramelessWindowHint|Qt::NoDropShadowWindowHint);
@@ -168,15 +171,13 @@ bool MainWindow::LoadImage(QString path) {
 		movie->start();
 		width  = movie->frameRect().width ();
 		height = movie->frameRect().height();
-		scaleimg();
 	} else {
 		img = QPixmap(path);
 		if(img.isNull()) return false;
 		width  = img.width ();
 		height = img.height();
-		scaleimg();
-		interpolateimg();
 	}
+	scaleimg();
 
 	setWindowTitle(stock?"Borderless":nameoffile);
 	loopbegin = "";
@@ -204,25 +205,26 @@ void MainWindow::scaleimg() {
 	if(height*scale > screen.height()) scale = (float)screen.height()/height;
 	int scaledwidth  = qRound(width *scale);
 	int scaledheight = qRound(height*scale);
-	setGeometry(
-		std::min(std::max(screen.left(),qRound((center.x()-scaledwidth *.5+1)*.5)*2)+scaledwidth ,screen.right ())-scaledwidth ,
-		std::min(std::max(screen.top (),qRound((center.y()-scaledheight*.5+1)*.5)*2)+scaledheight,screen.bottom())-scaledheight,
-		scaledwidth ,
-		scaledheight);
-	ui->canvas->setGeometry(0,0,
-		scaledwidth *.05f,
-		scaledheight*.05f);
+	int x = std::min(std::max(screen.left(),qRound((center.x()-scaledwidth *.5+1)*.5)*2)+scaledwidth ,screen.right ())-scaledwidth ;
+	int y = std::min(std::max(screen.top (),qRound((center.y()-scaledheight*.5+1)*.5)*2)+scaledheight,screen.bottom())-scaledheight;
+	interpolateimg();
+	ui->canvas->setGeometry(0,0,scaledwidth,scaledheight);
+	for(int i = 0; i < 2; ++i)
+		setGeometry(        x,y,scaledwidth,scaledheight);
 }
 
 void MainWindow::interpolateimg() {
 	if(animated) {
 		ui->canvas->movie()->setScaledSize((interpolated||stock)?QSize(qRound(width*scale),qRound(height*scale)):QSize(width,height));
+		ui->canvas->setScaledContents(!interpolated);
 	} else {
 		if(scale == 1)
 			ui->canvas->setPixmap(img);
 		else
 			ui->canvas->setPixmap(img.scaled(qRound(width*scale),qRound(height*scale),Qt::IgnoreAspectRatio,(interpolated||stock)?Qt::SmoothTransformation:Qt::FastTransformation));
+		ui->canvas->setScaledContents(false);
 	}
+	ui->canvas->updateGeometry();
 }
 
 void MainWindow::wheelEvent(QWheelEvent* event) {
@@ -234,15 +236,12 @@ void MainWindow::wheelEvent(QWheelEvent* event) {
 	if(height*scale < 32) scale = 32.0f/height;
 	int scaledwidth  = qRound(width *scale);
 	int scaledheight = qRound(height*scale);
-	setGeometry(
-		event->globalPosition().x()-scaledwidth *anchor.x(),
-		event->globalPosition().y()-scaledheight*anchor.y(),
-		scaledwidth ,
-		scaledheight);
-	ui->canvas->setGeometry(0,0,
-		scaledwidth ,
-		scaledheight);
+	int x = event->globalPosition().x()-scaledwidth *anchor.x();
+	int y = event->globalPosition().y()-scaledheight*anchor.y();
 	interpolateimg();
+	ui->canvas->setGeometry(0,0,scaledwidth,scaledheight);
+	for(int i = 0; i < 2; ++i)
+		setGeometry(        x,y,scaledwidth,scaledheight);
 }
 
 void MainWindow::ShowContextMenu(const QPoint &pos) {
@@ -352,7 +351,6 @@ void MainWindow::PasteFile() {
 	height = img.height();
 
 	scaleimg();
-	interpolateimg();
 
 	nextpath    = "";
 	prevpath    = "";
