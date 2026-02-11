@@ -28,6 +28,7 @@ private slots:
 
 protected:
 	void mousePressEvent(QMouseEvent* event);
+	void mouseReleaseEvent(QMouseEvent* event);
 	void mouseMoveEvent(QMouseEvent* event);
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
@@ -62,7 +63,7 @@ protected:
 	bool stock        = false;
 	bool animated     = false;
 	QPixmap img;
-	QPoint pressPos;
+	QPoint presspos;
 	QString formats;
 	QString movieformats;
 	QString dialogpath;

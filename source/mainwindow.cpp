@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(
 	interpolated = settings.value("interpolated",true ).toBool();
 
 	setAttribute(Qt::WA_TranslucentBackground);
-	setWindowIcon(QIcon(":/source/borderless.xpm"));
+	setWindowIcon(QIcon(":/source/icon.png"));
 	setAcceptDrops(true);
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	ui->setupUi(this);
@@ -100,12 +100,12 @@ MainWindow::~MainWindow() {
 
 bool MainWindow::LoadImage(QString path) {
 	if(path.isEmpty()) {
-		path = ":/source/borderless.xpm";
+		path = ":/source/borderless.png";
 		if(!stock) {
 			copyfile       ->setEnabled(false);
 			showinfolder   ->setEnabled(false);
 			nearestneighbor->setEnabled(false);
-			nearestneighbor->setChecked(true);
+			nearestneighbor->setChecked(false);
 			stock = true;
 		}
 	} else if(stock) {
@@ -184,7 +184,7 @@ bool MainWindow::LoadImage(QString path) {
 }
 
 void MainWindow::scaleimg() {
-	scale = stock?5:1;
+	scale = stock?.25:1;
 
 	QPoint center;
 	QRect screen;
@@ -216,12 +216,12 @@ void MainWindow::scaleimg() {
 
 void MainWindow::interpolateimg() {
 	if(animated) {
-		ui->canvas->movie()->setScaledSize((interpolated&&!stock)?QSize(qRound(width*scale),qRound(height*scale)):QSize(width,height));
+		ui->canvas->movie()->setScaledSize((interpolated||stock)?QSize(qRound(width*scale),qRound(height*scale)):QSize(width,height));
 	} else {
 		if(scale == 1)
 			ui->canvas->setPixmap(img);
 		else
-			ui->canvas->setPixmap(img.scaled(qRound(width*scale),qRound(height*scale),Qt::IgnoreAspectRatio,(interpolated&&!stock)?Qt::SmoothTransformation:Qt::FastTransformation));
+			ui->canvas->setPixmap(img.scaled(qRound(width*scale),qRound(height*scale),Qt::IgnoreAspectRatio,(interpolated||stock)?Qt::SmoothTransformation:Qt::FastTransformation));
 	}
 }
 
@@ -250,11 +250,19 @@ void MainWindow::ShowContextMenu(const QPoint &pos) {
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* event) {
-	pressPos = event->globalPosition().toPoint()-geometry().topLeft();
+	presspos = event->globalPosition().toPoint();
 	event->accept();
 }
+void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
+	if(event->globalPosition().x() != presspos.x() || event->globalPosition().y() != presspos.y()) {
+		event->accept();
+	} else if(stock) {
+		OpenFile();
+		event->accept();
+	}
+}
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
-	move(event->globalPosition().x()-pressPos.x(),event->globalPosition().y()-pressPos.y());
+	move(event->globalPosition().x()-presspos.x(),event->globalPosition().y()-presspos.y());
 	event->accept();
 }
 

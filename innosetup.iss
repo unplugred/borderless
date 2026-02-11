@@ -23,8 +23,8 @@ VersionInfoProductName=Borderless
 VersionInfoProductVersion=1.0
 VersionInfoVersion=1.0
 WizardImageStretch=false
-;WizardImageFile=assets\image\Borderless.bmp
-;WizardSmallImageFile=assets\smallimage\Borderless.bmp
+WizardImageFile=dist\install.bmp
+WizardSmallImageFile=dist\smallinstall.bmp
 ChangesAssociations=yes
 
 [Files]

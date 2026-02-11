@@ -21,7 +21,8 @@ add_executable(borderless
 )
 qt_add_resources(borderless imageresources
 	PREFIX "/"
-	FILES "source/borderless.xpm"
+	FILES "source/icon.png"
+	FILES "source/borderless.png"
 )
 
 target_link_libraries(borderless Qt6::Widgets)

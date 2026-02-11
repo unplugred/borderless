@@ -15,8 +15,8 @@
 		</property>
 		<property name="windowIcon">
 			<iconset>
-				<normaloff>:/source/borderless.xpm</normaloff>
-				:/source/borderless.xpm
+				<normaloff>:/source/icon.png</normaloff>
+				:/source/icon.png
 			</iconset>
 		</property>
 		<widget class="QLabel" name="canvas">

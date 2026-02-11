@@ -1,43 +1,43 @@
-# borderless
-
-A lightweight UI-less image viewer
+<p align="center"><img src="dist/logo.png" height="70px"><br/><b>a lightweight ui-less image viewer</b></p>
 
 ## lightweight you say?
 
-Written in C++. Opens in less than a second
+written in c++. opens in less than a second
 
 ## and ui less too?
 
-Borderless and UI-less. You can interact with it via right click menu or keymaps.
+borderless and ui-less. you can interact with it via right click menu or keymaps.
 
-Keymaps being:
+keymaps being:
 
-Left/Right to navigate through the folder.
+left/right to navigate through the folder.
 
-Escape to quit.
+escape to quit.
 
-Scrollwheel to zoom in/out.
+scrollwheel to zoom in/out.
 
-## Features
+drag to move
 
-Fully transparent window
+## features
 
-Animated Gif support
+fully transparent window
 
-Always on top toggle
+animated gif/webp support
 
-Bilinear/Nearest-Neighbor interpolation toggle
+always on top toggle
 
-Copy to clipboard button
+bilinear/nearest-neighbor interpolation toggle
 
-Open containing folder button
+copy/paste to/from clipboard button
 
-Supports .bmp, .cur, .gif, .ico, .jpg, .pbm, .pgm, .png, .ppm, .svg, .xbm, .xpm
+open containing folder button
 
-## Building the thing
+supports .png, .jpg, .gif, .webp, .tiff, .svg, .svgz, .bmp, .tga, .cur, .ico, .jfif, .pbm, .pgm, .ppm, .xbm, .xpm, .icns, .jp2, .mng, .wbmp
 
-I built it on QT, forgot which version. You can try to use QT Creator and may god be on your side.
+## building the thing
 
-## Can i have a screenshot?
+i built it on qt, forgot which version. you can try to use qt creator and may god be on your side.
+
+## can i have a screenshot?
 
 no
