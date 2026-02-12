@@ -120,10 +120,8 @@ def build(config):
 	run_command("cmake --build \"build_"+systems[system]["code"]+"\" --config "+config+" --target borderless",systems[system]["code"]=="mac")
 	create_dir("artifact")
 	if systems[system]["code"] == "mac":
-		create_dir(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"],"Contents","Resources"]))
-		copy(join(["dist","icon.icns"]),join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"],"Contents","Resources","borderless.icns"]))
-		run_command("macdeployqt "+join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]])+" -dmg");
 		copy(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))
+		run_command("macdeployqt "+join(["artifact","borderless"+systems[system]["executable"]])+" -dmg");
 		# TODO codesign
 	elif systems[system]["code"] == "win":
 		copy(join(["build_"+systems[system]["code"],"Release","borderless"+systems[system]["executable"]]),join(["artifact","borderless"+systems[system]["executable"]]))

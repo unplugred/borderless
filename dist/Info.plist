@@ -44,7 +44,7 @@
 		<key>CFBundleExecutable</key>
 		<string>Borderless</string>
 		<key>CFBundleIconFile</key>
-		<string>borderless.icns</string>
+		<string>icon.icns</string>
 		<key>CFBundleIdentifier</key>
 		<string>com.unplugred.borderless</string>
 		<key>CFBundleInfoDictionaryVersion</key>

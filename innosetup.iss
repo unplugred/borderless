@@ -22,9 +22,9 @@ VersionInfoCompany=UnplugRed
 VersionInfoProductName=Borderless
 VersionInfoProductVersion=1.0
 VersionInfoVersion=1.0
-WizardImageStretch=false
-WizardImageFile=dist\install.bmp
-WizardSmallImageFile=dist\smallinstall.bmp
+WizardImageStretch=true
+WizardImageFile=dist\install.png
+WizardSmallImageFile=dist\smallinstall.png
 ChangesAssociations=yes
 
 [Files]

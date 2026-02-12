@@ -13,16 +13,20 @@ set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
 
-add_executable(borderless
+set(app_icon_resource_windows "dist/icon.rc")
+set(app_icon_macos "dist/icon.icns")
+qt_add_executable(borderless
 	"source/main.cpp"
 	"source/mainwindow.cpp"
 	"source/mainwindow.h"
 	"source/mainwindow.ui"
+	${app_icon_resource_windows}
+	${app_icon_macos}
 )
 qt_add_resources(borderless imageresources
 	PREFIX "/"
-	FILES "source/icon.png"
-	FILES "source/borderless.png"
+	FILES "dist/icon.png"
+	FILES "source/init.png"
 )
 
 target_link_libraries(borderless Qt6::Widgets)
@@ -34,4 +38,7 @@ set_target_properties(borderless PROPERTIES
 	MACOSX_BUNDLE_GUI_IDENTIFIER com.unplugred.borderless
 	MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
 	MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
+	MAXOSX_BUNDLE_ICON_FILE icon.icns
 )
+
+qt_finalize_target(borderless)
