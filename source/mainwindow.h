@@ -64,6 +64,7 @@ protected:
 	bool animated     = false;
 	QPixmap img;
 	QPoint presspos;
+	QPoint pressposglobal;
 	QString formats;
 	QString movieformats;
 	QString dialogpath;
