@@ -249,11 +249,13 @@ void MainWindow::ShowContextMenu(const QPoint &pos) {
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* event) {
-	presspos = event->globalPosition().toPoint();
+	presspos = event->globalPosition().toPoint()-geometry().topLeft();
 	event->accept();
 }
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
-	if(event->globalPosition().x() != presspos.x() || event->globalPosition().y() != presspos.y()) {
+	if((
+		abs((event->globalPosition().x()-geometry().left())-presspos.x())+
+		abs((event->globalPosition().y()-geometry().top ())-presspos.y())) > 1) {
 		event->accept();
 	} else if(stock) {
 		OpenFile();
