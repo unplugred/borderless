@@ -10,11 +10,10 @@ set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS
 	$<$<CONFIG:RELWITHDEBINFO>:QT_MESSAGELOGCONTEXT>
 )
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-qt_standard_project_setup()
-
 set(app_icon_resource_windows "dist/icon.rc")
 set(app_icon_macos "dist/icon.icns")
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+qt_standard_project_setup()
 qt_add_executable(borderless
 	"source/main.cpp"
 	"source/mainwindow.cpp"
@@ -28,9 +27,7 @@ qt_add_resources(borderless imageresources
 	FILES "dist/icon.png"
 	FILES "source/init.png"
 )
-
-target_link_libraries(borderless Qt6::Widgets)
-
+target_link_libraries(borderless PRIVATE Qt6::Widgets)
 set_target_properties(borderless PROPERTIES
 	WIN32_EXECUTABLE ON
 	MACOSX_BUNDLE ON
