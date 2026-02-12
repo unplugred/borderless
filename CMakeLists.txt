@@ -10,7 +10,7 @@ set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS
 	$<$<CONFIG:RELWITHDEBINFO>:QT_MESSAGELOGCONTEXT>
 )
 
-set(app_icon_resource_windows "dist/icon.rc")
+set(app_icon_resource_windows "dist/icon.qrc")
 set(app_icon_macos "dist/icon.icns")
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
