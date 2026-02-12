@@ -40,5 +40,3 @@ set_target_properties(borderless PROPERTIES
 	MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
 	MAXOSX_BUNDLE_ICON_FILE icon.icns
 )
-
-qt_finalize_target(borderless)
