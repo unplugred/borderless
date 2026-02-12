@@ -31,7 +31,7 @@ ChangesAssociations=yes
 Source: "artifact\*"; DestDir: {app}; Flags: recursesubdirs ignoreversion
 [Icons]
 Name: "{userdesktop}\Borderless"; Filename: "{app}\borderless.exe"; Tasks: desktopicon
-Name: "{group}\Borderless"; Filename: "{group}\borderless.exe"
+Name: "{group}\Borderless"; Filename: "{app}\borderless.exe"
 Name: "{group}\Uninstall Borderless"; Filename: {uninstallexe}
 [Registry]
 Root: HKCR; Subkey: ".png" ; Tasks: "associations/png" ; ValueType: string; ValueName: ""; ValueData: "Borderless"; Flags: uninsdeletevalue
