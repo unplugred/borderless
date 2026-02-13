@@ -14,6 +14,8 @@ set(app_icon_resource_windows "dist/icon.rc")
 set(app_icon_macos "dist/icon.icns")
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
+set_source_files_properties(${app_icon_macos} PROPERTIES
+	MACOSX_PACKAGE_LOCATION "Resources")
 qt_add_executable(borderless
 	"source/main.cpp"
 	"source/mainwindow.cpp"
