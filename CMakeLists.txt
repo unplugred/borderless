@@ -24,8 +24,7 @@ qt_add_executable(borderless
 )
 qt_add_resources(borderless imageresources
 	PREFIX "/"
-	FILES "dist/icon.png"
-	FILES "source/init.png"
+	FILES "source/init.png" "dist/icon.png" "dist/icon.ico"
 )
 target_link_libraries(borderless PRIVATE Qt6::Widgets)
 set_target_properties(borderless PROPERTIES
