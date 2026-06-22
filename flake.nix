@@ -8,13 +8,12 @@
 	flake-utils.lib.eachDefaultSystem (system:
 	let
 		pkgs = nixpkgs.legacyPackages.${system};
-		pythonPackages = ps: with ps; [ ]; # python packages
-		pythonEnv = pkgs.python311.withPackages pythonPackages;
 	in {
 		devShells.default = pkgs.mkShell {
 			buildInputs = with pkgs; [ # packages
 				git
-				pythonEnv
+				(python311.withPackages (ps: with ps; [ # python packages
+				]))
 				cmake
 				qt6.qtbase
 				qt6.qtimageformats
