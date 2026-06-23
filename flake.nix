@@ -8,9 +8,9 @@
 	flake-utils.lib.eachDefaultSystem (system:
 	let
 		pkgs = nixpkgs.legacyPackages.${system};
-	in {
+	in with pkgs; {
 		devShells.default = pkgs.mkShell {
-			buildInputs = with pkgs; [ # packages
+			buildInputs = [ # packages
 				git
 				(python311.withPackages (ps: with ps; [ # python packages
 				]))
@@ -23,6 +23,26 @@
 
 			# environment variables
 			PROJECT_NAME = "borderless";
+		};
+		packages.default = stdenv.mkDerivation rec {
+			name = "borderless";
+			version = "2.0.0";
+			src = ./.;
+
+			buildInputs = [
+				qt6.qtimageformats
+				qt6.qtsvg
+			];
+			nativeBuildInputs = [
+				qt6.qtbase
+				qt6.wrapQtAppsHook
+				cmake
+			];
+
+			installPhase = ''
+				mkdir -p $out/bin
+				cp borderless $out/bin
+			'';
 		};
 	});
 }
