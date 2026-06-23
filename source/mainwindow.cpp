@@ -13,8 +13,8 @@
 
 MainWindow::MainWindow(QWidget *parent, QString path) : QMainWindow(parent), ui(new Ui::MainWindow) {
 	QCoreApplication::setOrganizationName("unplugred");
-	QCoreApplication::setOrganizationDomain("https://unplug.red/");
-	QCoreApplication::setApplicationName("Borderless");
+	QCoreApplication::setOrganizationDomain("unplug.red");
+	QCoreApplication::setApplicationName("borderless");
 	QCoreApplication::setApplicationVersion("1.3.0");
 
 	QSettings settings;
