@@ -12,7 +12,7 @@
 		devShells.default = pkgs.mkShell {
 			buildInputs = [ # packages
 				git
-				(python311.withPackages (ps: with ps; [ # python packages
+				(python3.withPackages (ps: with ps; [ # python packages
 				]))
 				cmake
 				qt6.qtbase
