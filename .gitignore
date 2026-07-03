@@ -6,3 +6,4 @@ build_win
 build_mac
 artifact
 result
+.direnv/
